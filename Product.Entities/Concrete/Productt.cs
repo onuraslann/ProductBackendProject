@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Product.Entities.Concrete
 {
-    public class Product:EntityBase,IEntity
+    public class Productt:EntityBase,IEntity
     {
  
         public int CategoryId { get; set; }

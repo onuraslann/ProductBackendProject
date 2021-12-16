@@ -11,6 +11,6 @@ namespace Product.Entities.Concrete
     {
       
         public string BrandName { get; set; }
-        public ICollection<Product> Products { get; set; }
+        public ICollection<Productt> Products { get; set; }
     }
 }
