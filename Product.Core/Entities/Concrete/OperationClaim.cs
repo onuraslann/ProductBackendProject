@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace Product.Core.Entities.Concrete
 {
-    public class OperaitonClaim:EntityBase,IEntity
+    public class OperationClaim:EntityBase,IEntity
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Decription { get; set; }
         public ICollection<User> User { get; set; }
+
     }
 }

@@ -1,4 +1,4 @@
-﻿using Product.Core.DataAccess.Abstract;
+﻿using Product.Core.Entities.Abstract;
 using Product.Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -6,9 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Product.DataAccess.Abstract
+namespace Product.Entities.Dtos
 {
-   public  interface IProductDal: IEntityRepository<Entities.Concrete.Productt>
+    public class ProductListDto:IDto
     {
+        public IList<Productt> Productts { get; set; }
     }
 }

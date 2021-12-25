@@ -12,13 +12,13 @@ namespace Product.Core.DataAccess.Abstract
     {
         Task<T> GetAsync(Expression<Func<T,bool>> expression);
         Task<IList<T>> GetAllAsync(Expression<Func<T, bool>> expression = null);
-
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
         Task<bool> Any(Expression<Func<T, bool>> expression);
         T Add(T entity);
         T Update(T entity);
+        T Delete(T entity);
         List<T> GetAll(Expression<Func<T, bool>> expression = null);
     }
 }

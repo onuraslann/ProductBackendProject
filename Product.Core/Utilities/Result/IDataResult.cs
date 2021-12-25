@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Product.Core.Entities.Abstract
+namespace Product.Core.Utilities.Result
 {
-    public interface IEntity
+  public  interface IDataResult<T>:IResult
     {
-  
-
+        T Data { get; }
     }
 }

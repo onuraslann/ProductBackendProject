@@ -1,0 +1,20 @@
+﻿using Product.Core.Utilities.Result;
+using Product.Entities.Concrete;
+using Product.Entities.Dtos;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Product.Business.Services.Abstract
+{
+    public interface IColorService
+    {
+        Task<IDataResult<IList<Color>>> GetList();
+        Task<IResult> Add(ColorAddDto colorAddDto, string createdByName);
+        Task<IResult> Update(ColorUpdateDto colorUpdateDto, string modifiedByName);
+        Task<IResult> Delete(int colorId, string modifiedByName);
+        Task<IResult> HardDelete(int colorId);
+    }
+}

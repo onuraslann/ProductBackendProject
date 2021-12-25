@@ -9,7 +9,7 @@ namespace Product.Entities.Concrete
 {
     public class Productt:EntityBase,IEntity
     {
- 
+        public int Id { get; set; }
         public int CategoryId { get; set; }
         public Category Category  { get; set; }
         public int Stock { get; set; }
@@ -20,8 +20,6 @@ namespace Product.Entities.Concrete
         public Color Color { get; set; }
         public int BrandId { get; set; }
         public Brand Brand  { get; set; }
-      
-
 
     }
 }

@@ -9,8 +9,10 @@ namespace Product.Entities.Concrete
 {
    public  class Brand: EntityBase, IEntity
     {
-      
+        public int Id { get; set; }
         public string BrandName { get; set; }
-        public ICollection<Productt> Products { get; set; }
+       
+        public ICollection<Productt> Productts { get; set; }
+       
     }
 }

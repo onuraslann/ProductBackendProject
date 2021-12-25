@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Product.Core.Entities.Abstract
+namespace Product.Core.Utilities.Result
 {
-    public interface IEntity
+    public interface IResult
     {
-  
-
+        bool Success { get; }
+        string Messages { get; }
     }
 }

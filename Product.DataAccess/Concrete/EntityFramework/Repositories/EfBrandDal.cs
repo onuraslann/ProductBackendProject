@@ -8,11 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Product.DataAccess.Concrete.EntityFramework
+namespace Product.DataAccess.Concrete.EntityFramework.Repositories
 {
-    public class EfProductDal: EfEntityRepositoryBase<Productt>,IProductDal
+    public class EfBrandDal: EfEntityRepositoryBase<Brand>,IBrandDal
     {
-        public EfProductDal(DbContext context) : base(context)
+        public EfBrandDal(DbContext context):base(context)
         {
 
         }

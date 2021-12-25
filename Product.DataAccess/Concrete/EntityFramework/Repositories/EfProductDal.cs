@@ -8,11 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Product.DataAccess.Concrete.EntityFramework
+namespace Product.DataAccess.Concrete.EntityFramework.Repositories
 {
-    public class EfColorDal: EfEntityRepositoryBase<Color>,IColorDal
+    public class EfProductDal: EfEntityRepositoryBase<Entities.Concrete.Productt>,IProductDal
     {
-        public EfColorDal(DbContext context) : base(context)
+        public EfProductDal(DbContext context) : base(context)
         {
 
         }

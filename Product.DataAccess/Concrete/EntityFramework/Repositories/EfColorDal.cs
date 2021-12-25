@@ -1,18 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Product.Core.DataAccess.Concrete.EntityFramework;
-using Product.Core.Entities.Concrete;
 using Product.DataAccess.Abstract;
+using Product.Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Product.DataAccess.Concrete.EntityFramework
+namespace Product.DataAccess.Concrete.EntityFramework.Repositories
 {
-  public   class EfUserDal: EfEntityRepositoryBase<User>,IUserDal
+    public class EfColorDal: EfEntityRepositoryBase<Color>,IColorDal
     {
-        public EfUserDal(DbContext context) : base(context)
+        public EfColorDal(DbContext context) : base(context)
         {
 
         }

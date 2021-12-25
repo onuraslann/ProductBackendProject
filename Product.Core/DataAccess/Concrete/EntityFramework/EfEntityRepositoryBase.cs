@@ -36,6 +36,12 @@ namespace Product.Core.DataAccess.Concrete.EntityFramework
             return await _context.Set<TEntity>().AnyAsync(expression);
         }
 
+        public TEntity Delete(TEntity entity)
+        {
+            _context.Remove(entity);
+            return entity;
+        }
+
         public async  Task DeleteAsync(TEntity entity)
         {
             await Task.Run(() => { _context.Set<TEntity>().Remove(entity); });

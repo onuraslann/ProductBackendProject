@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Product.Core.Entities.Abstract
 {
-    public interface IEntity
+  public  interface IDto
     {
-  
-
     }
 }
