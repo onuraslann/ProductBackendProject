@@ -11,10 +11,10 @@ namespace Product.Business.Services.Abstract
 {
    public interface IBrandService
     {
-        Task<IDataResult<IList<Brand>>> GetList();
+        Task<IDataResult<BrandListDto>> GetList();
         Task<IResult> Add(BrandAddDto  brandAddDto, string createdByName);
         Task<IResult> Update(BrandUpdateDto brandUpdateDto, string modifiedByName);
-        Task<IResult> Delete(int brandId, string modifiedByName);
+
         Task<IResult> HardDelete(int brandId);
     }
 }

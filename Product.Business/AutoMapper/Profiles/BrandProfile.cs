@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿ using AutoMapper;
 using Product.Entities.Concrete;
 using Product.Entities.Dtos;
 using System;

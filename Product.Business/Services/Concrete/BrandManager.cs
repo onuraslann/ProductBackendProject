@@ -1,4 +1,5 @@
-﻿using Product.Business.Constants;
+﻿using AutoMapper;
+using Product.Business.Constants;
 using Product.Business.Services.Abstract;
 using Product.Core.Utilities.Result;
 using Product.DataAccess.Abstract;
@@ -15,40 +16,59 @@ namespace Product.Business.Services.Concrete
     public class BrandManager : IBrandService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public BrandManager(IUnitOfWork unitOfWork)
+
+        public BrandManager(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public Task<IResult> Add(BrandAddDto brandAddDto, string createdByName)
+        public async Task<IResult> Add(BrandAddDto brandAddDto, string createdByName)
         {
-            throw new NotImplementedException();
+            var brand = _mapper.Map<Brand>(brandAddDto);
+            brand.CreatedByName = createdByName;
+            brand.ModifiedByName = createdByName;
+            await _unitOfWork.Brand.AddAsync(brand).ContinueWith(t => _unitOfWork.SaveAsync());
+            return new SuccessResult(Messages.BrandAdded);
         }
 
-        public Task<IResult> Delete(int brandId, string modifiedByName)
-        {
-            throw new NotImplementedException();
-        }
+     
 
-        public async Task<IDataResult<IList<Brand>>> GetList()
+        public async Task<IDataResult<BrandListDto>> GetList()
         {
-            var brand =  await _unitOfWork.Brand.GetAllAsync();
-            if (brand.Count > -1)
+            var brand = await _unitOfWork.Brand.GetAllAsync();
+            if (brand.Count>-1)
             {
-                return new SuccessDataResult<IList<Brand>>(brand, Messages.BrandList);
+                return new SuccessDataResult<BrandListDto>(new BrandListDto{
+                 Brands=brand
+                },Messages.BrandList);
+
             }
-            return new ErrorDataResult<IList<Brand>>(Messages.ErrorMessages);
+            return new ErrorDataResult<BrandListDto>(Messages.ErrorMessages);
+            
         }
 
-        public Task<IResult> HardDelete(int brandId)
+        public async  Task<IResult> HardDelete(int brandId)
         {
-            throw new NotImplementedException();
+            var brand = await _unitOfWork.Brand.GetAsync(b => b.Id == brandId);
+            if (brand != null)
+            {
+             
+                await _unitOfWork.Brand.DeleteAsync(brand).ContinueWith(t => _unitOfWork.SaveAsync());
+                return new SuccessResult();
+            }
+            return new ErrorResult(Messages.ErrorMessages);
         }
 
-        public Task<IResult> Update(BrandUpdateDto brandUpdateDto, string modifiedByName)
+        public async Task<IResult> Update(BrandUpdateDto brandUpdateDto, string modifiedByName)
         {
-            throw new NotImplementedException();
+            var brand  = _mapper.Map<Brand>(brandUpdateDto);
+            brand.ModifedDate = DateTime.Now;
+            brand.ModifiedByName = modifiedByName;
+            await _unitOfWork.Brand.UpdateAsync(brand).ContinueWith(t => _unitOfWork.SaveAsync());
+            return new SuccessResult(Messages.BrandUpdate);
         }
     }
 }

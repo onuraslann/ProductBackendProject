@@ -15,7 +15,7 @@ namespace Product.Business.Services.Abstract
         Task<IDataResult<ProductListDto>> GetByCategory(int categoryId);
         Task<IResult> Add(ProductAddDto productAddDto, string createdByName);
         Task<IResult> Update(ProductUpdateDto  productUpdateDto, string modifiedByName);
-        Task<IResult> Delete(int productId, string modifiedByName);
+        Task<IDataResult<ProductListDto>> GetByBrand(int brandId);
         Task<IResult> HardDelete(int productId);
     }
 }

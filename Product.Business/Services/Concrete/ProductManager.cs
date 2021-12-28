@@ -1,7 +1,9 @@
-﻿using Product.Business.Constants;
+﻿using AutoMapper;
+using Product.Business.Constants;
 using Product.Business.Services.Abstract;
 using Product.Core.Utilities.Result;
 using Product.DataAccess.Abstract;
+using Product.Entities.Concrete;
 using Product.Entities.Dtos;
 using System;
 using System.Collections.Generic;
@@ -14,20 +16,35 @@ namespace Product.Business.Services.Concrete
     public class ProductManager : IProductService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ProductManager(IUnitOfWork unitOfWork)
+       
+        public ProductManager(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper; 
         }
 
-        public Task<IResult> Add(ProductAddDto productAddDto, string createdByName)
+        public async Task<IResult> Add(ProductAddDto productAddDto, string createdByName)
         {
-            throw new NotImplementedException();
+            var product = _mapper.Map<Productt>(productAddDto);
+            product.CreatedByName = createdByName;
+            product.ModifiedByName = createdByName;
+            await _unitOfWork.Product.AddAsync(product).ContinueWith(t=>_unitOfWork.SaveAsync());
+            return new SuccessResult();
         }
 
-        public Task<IResult> Delete(int productId, string modifiedByName)
+        public async Task<IDataResult<ProductListDto>> GetByBrand(int brandId)
         {
-            throw new NotImplementedException();
+            var product = await _unitOfWork.Product.GetAllAsync(p => p.BrandId == brandId);
+            if (product != null)
+            {
+                return new SuccessDataResult<ProductListDto>(new ProductListDto
+                {
+                    Productts = product
+                }) ;
+            }
+            return new ErrorDataResult<ProductListDto>(Messages.ErrorMessages);
         }
 
         public async Task<IDataResult<ProductListDto>> GetByCategory(int categoryId)
@@ -57,14 +74,25 @@ namespace Product.Business.Services.Concrete
             return new ErrorDataResult<ProductListDto>(Messages.ErrorMessages);
         }
 
-        public Task<IResult> HardDelete(int productId)
+        public async Task<IResult> HardDelete(int productId)
         {
-            throw new NotImplementedException();
+            var product = await _unitOfWork.Product.GetAsync(p => p.Id == productId);
+            if (product != null)
+            {
+                await _unitOfWork.Product.DeleteAsync(product).ContinueWith(t => _unitOfWork.SaveAsync());
+                return new SuccessResult();
+            }
+            return new ErrorResult(Messages.ErrorMessages);
+
         }
 
-        public Task<IResult> Update(ProductUpdateDto productUpdateDto, string modifiedByName)
+        public async Task<IResult> Update(ProductUpdateDto productUpdateDto, string modifiedByName)
         {
-            throw new NotImplementedException();
+
+            var product = _mapper.Map<Productt>(productUpdateDto);
+            product.ModifiedByName = modifiedByName;
+            await _unitOfWork.Product.UpdateAsync(product).ContinueWith(p => _unitOfWork.SaveAsync());
+            return new SuccessResult();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Product.Business.Constants;
+﻿using AutoMapper;
+using Product.Business.Constants;
 using Product.Business.Services.Abstract;
 using Product.Core.Utilities.Result;
 using Product.DataAccess.Abstract;
@@ -15,40 +16,62 @@ namespace Product.Business.Services.Concrete
     public class ColorManager : IColorService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ColorManager(IUnitOfWork unitOfWork)
+     
+
+        public ColorManager(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public Task<IResult> Add(ColorAddDto colorAddDto, string createdByName)
+        public async Task<IResult> Add(ColorAddDto colorAddDto, string createdByName)
         {
-            throw new NotImplementedException();
+            var color = _mapper.Map<Color>(colorAddDto);
+            color.ModifiedByName = createdByName;
+            color.CreatedByName = createdByName;
+            color.CreatedDate = DateTime.Now;
+            color.ModifedDate = DateTime.Now;
+            await _unitOfWork.Color.AddAsync(color).ContinueWith(t => _unitOfWork.SaveAsync());
+            return new SuccessResult(Messages.ColorAdded);
         }
 
-        public Task<IResult> Delete(int colorId, string modifiedByName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<IDataResult<IList<Color>>> GetList()
+       
+        public async Task<IDataResult<ColorListDto>> GetList()
         {
             var color = await _unitOfWork.Color.GetAllAsync();
-            if (color.Count>-1)
+            if (color.Count > -1)
             {
-                return new SuccessDataResult<IList<Color>>(color, Messages.ColorList);
+                return new SuccessDataResult<ColorListDto>(new ColorListDto
+                {
+                    Colors = color
+                }, Messages.ColorList);
             }
-            return new ErrorDataResult<IList<Color>>(Messages.ErrorMessages);
+            return new ErrorDataResult<ColorListDto>(Messages.ErrorMessages);
         }
 
-        public Task<IResult> HardDelete(int colorId)
+        public async Task<IResult> HardDelete(int colorId)
         {
-            throw new NotImplementedException();
+            var color = await _unitOfWork.Color.GetAsync(c => c.Id == colorId);
+            if (color != null)
+            {
+                await _unitOfWork.Color.DeleteAsync(color).ContinueWith(t=>_unitOfWork.SaveAsync());
+                return new SuccessResult(Messages.ColorDelete);
+            }
+
+            return new ErrorResult(Messages.ErrorMessages);
         }
 
-        public Task<IResult> Update(ColorUpdateDto colorUpdateDto, string modifiedByName)
+        public async Task<IResult> Update(ColorUpdateDto colorUpdateDto, string modifiedByName)
         {
-            throw new NotImplementedException();
+            var color = _mapper.Map<Color>(colorUpdateDto);
+            color.ModifiedByName = modifiedByName;
+            color.CreatedByName = modifiedByName;
+            color.CreatedDate = DateTime.Now;
+            color.ModifedDate = DateTime.Now;
+            await _unitOfWork.Color.UpdateAsync(color).ContinueWith(t=>_unitOfWork.SaveAsync());
+            return new SuccessResult();
         }
     }
 }
