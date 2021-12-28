@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Product.Business.Services.Abstract;
+using Product.Entities.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace WebApplication1.Controllers
@@ -12,22 +14,32 @@ namespace WebApplication1.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        ICatservice _categoryService;
+        ICategoryService _categorySerive;
 
-        public CategoriesController(ICatservice categoryService)
+        public CategoriesController(ICategoryService categorySerive)
         {
-            _categoryService = categoryService;
+            _categorySerive = categorySerive;
         }
-
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
-            var result = _categoryService.GetAll();
-            if (result.Success)
+            var categories = _categorySerive.GetList();
+            if (categories != null)
             {
-                return Ok(result);
+                return Ok(categories.Result);
             }
-            return BadRequest(result);
+            return BadRequest(categories.Result);
+        }
+        [HttpPost("add")]
+        
+        public  IActionResult Add(CategoryAddDto categoryAddDto)
+        {
+            var categories =  _categorySerive.Add(categoryAddDto);
+            if (categories != null)
+            {
+                return Ok(categories.Result);
+            }
+            return BadRequest(categories.Result);
         }
     }
 }

@@ -26,15 +26,17 @@ namespace Product.Business.Services.Concrete
             _mapper = mapper;
         }
 
-        public async Task<IResult> Add(CategoryAddDto categoryAddDto, string createdByName)
+        public async Task<IResult> Add(CategoryAddDto categoryAddDto)
         {
             var categories = _mapper.Map<Category>(categoryAddDto);
-            categories.CreatedByName = createdByName;
+           
             categories.ModifedDate = DateTime.Now;
-            categories.ModifiedByName = createdByName;
+     
             await _unitOfWork.Categories.AddAsync(categories).ContinueWith(t => _unitOfWork.SaveAsync());
             return new SuccessResult(Messages.CategoryAdded);
         }
+
+    
 
         public IDataResult<List<Category>> GetAll()
         {

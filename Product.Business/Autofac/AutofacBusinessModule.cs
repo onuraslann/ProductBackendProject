@@ -17,8 +17,9 @@ namespace Product.Business.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<CatManager>().As<ICatservice>().SingleInstance();
+            builder.RegisterType<CategoryManager>().As<ICategoryService>().SingleInstance();
             builder.RegisterType<EfCategoryDal>().As<ICategoryDal>().SingleInstance();
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().SingleInstance();
            
 
         }

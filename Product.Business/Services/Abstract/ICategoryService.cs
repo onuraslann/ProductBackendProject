@@ -14,7 +14,8 @@ namespace Product.Business.Services.Abstract
     {
         Task<IDataResult<CategoryListDto>> GetList();
 
-        Task<IResult> Add(CategoryAddDto categoryAddDto,string createdByName);
+        Task<IResult> Add(CategoryAddDto categoryAddDto);
+   
         Task<IResult> Update(CategoryUpdateDto categoryUpdateDto,string modifiedByName);
 
         Task<IResult> HardDelete(int categoryId);

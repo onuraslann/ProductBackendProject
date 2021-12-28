@@ -28,6 +28,7 @@ namespace Product.Business.Services.Concrete
         public async Task<IResult> Add(BrandAddDto brandAddDto, string createdByName)
         {
             var brand = _mapper.Map<Brand>(brandAddDto);
+          
             brand.CreatedByName = createdByName;
             brand.ModifiedByName = createdByName;
             await _unitOfWork.Brand.AddAsync(brand).ContinueWith(t => _unitOfWork.SaveAsync());
