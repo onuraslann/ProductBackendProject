@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Product.Business.Constants;
 using Product.Business.Services.Abstract;
+using Product.Core.Utilities.Busines;
 using Product.Core.Utilities.Result;
 using Product.DataAccess.Abstract;
 using Product.Entities.Concrete;
@@ -27,10 +28,17 @@ namespace Product.Business.Services.Concrete
 
         public async Task<IResult> Add(BrandAddDto brandAddDto, string createdByName)
         {
+            IResult result = BusinesRules.Run(CheckIfBrandNameExist(brandAddDto.BrandName));
+            if (result != null)
+            {
+                return result;
+            }
             var brand = _mapper.Map<Brand>(brandAddDto);
-          
-            brand.CreatedByName = createdByName;
+            brand.IsDeleted = false;
             brand.ModifiedByName = createdByName;
+            brand.CreatedByName = createdByName;
+            brand.CreatedDate = DateTime.Now;
+            brand.ModifedDate = DateTime.Now;
             await _unitOfWork.Brand.AddAsync(brand).ContinueWith(t => _unitOfWork.SaveAsync());
             return new SuccessResult(Messages.BrandAdded);
         }
@@ -70,6 +78,16 @@ namespace Product.Business.Services.Concrete
             brand.ModifiedByName = modifiedByName;
             await _unitOfWork.Brand.UpdateAsync(brand).ContinueWith(t => _unitOfWork.SaveAsync());
             return new SuccessResult(Messages.BrandUpdate);
+        }
+        private  IResult CheckIfBrandNameExist(string brandName)
+        {
+            var brand =  _unitOfWork.Brand.GetAll(x => x.BrandName == brandName).Any();
+            if (brand)
+            {
+                return new ErrorResult(Messages.ErrorMessages);
+            }
+            
+            return new SuccessResult();
         }
     }
 }

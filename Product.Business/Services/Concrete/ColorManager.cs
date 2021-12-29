@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Product.Business.Constants;
 using Product.Business.Services.Abstract;
+using Product.Core.Utilities.Busines;
 using Product.Core.Utilities.Result;
 using Product.DataAccess.Abstract;
 using Product.Entities.Concrete;
@@ -26,11 +27,16 @@ namespace Product.Business.Services.Concrete
             _mapper = mapper;
         }
 
-        public async Task<IResult> Add(ColorAddDto colorAddDto, string createdByName)
+        public async Task<IResult> Add(ColorAddDto colorAddDto)
         {
+            IResult result = BusinesRules.Run(CheckIfColorExist(colorAddDto.ColorName));
+            if (result != null)
+            {
+                return result;
+            }
+
             var color = _mapper.Map<Color>(colorAddDto);
-            color.ModifiedByName = createdByName;
-            color.CreatedByName = createdByName;
+          
             color.CreatedDate = DateTime.Now;
             color.ModifedDate = DateTime.Now;
             await _unitOfWork.Color.AddAsync(color).ContinueWith(t => _unitOfWork.SaveAsync());
@@ -72,6 +78,16 @@ namespace Product.Business.Services.Concrete
             color.ModifedDate = DateTime.Now;
             await _unitOfWork.Color.UpdateAsync(color).ContinueWith(t=>_unitOfWork.SaveAsync());
             return new SuccessResult();
+        }
+        private IResult CheckIfColorExist(string colorName)
+        {
+            var color =  _unitOfWork.Color.GetAll(x => x.ColorName == colorName).Any();
+            if (color)
+            {
+                return new ErrorResult(Messages.ErrorMessages);
+            }
+            return new SuccessResult();
+
         }
     }
 }

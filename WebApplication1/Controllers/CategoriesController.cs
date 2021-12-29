@@ -30,11 +30,11 @@ namespace WebApplication1.Controllers
             }
             return BadRequest(categories.Result);
         }
-        [HttpPost("add")]
+        [HttpPost("post")]
         
-        public  IActionResult Add(CategoryAddDto categoryAddDto)
+        public  IActionResult Post(CategoryAddDto categoryAddDto, string createdName)
         {
-            var categories =  _categorySerive.Add(categoryAddDto);
+            var categories =  _categorySerive.Add(categoryAddDto,createdName);
             if (categories != null)
             {
                 return Ok(categories.Result);

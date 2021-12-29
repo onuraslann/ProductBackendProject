@@ -17,6 +17,7 @@ namespace Product.Business.Services.Abstract
         Task<IResult> Update(ProductUpdateDto  productUpdateDto, string modifiedByName);
         Task<IDataResult<ProductListDto>> GetByBrand(int brandId);
         Task<IResult> HardDelete(int productId);
+        IDataResult<List<ProductDetailDto>> GetByDtoAsync();
     }
 }
 

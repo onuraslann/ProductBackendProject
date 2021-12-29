@@ -33,8 +33,11 @@ namespace WebApplication1
 
             services.AddControllers();
             services.AddAutoMapper(typeof(CategoryProfile));
+            services.AddAutoMapper(typeof(ProductProfile));
+            services.AddAutoMapper(typeof(BrandProfile));
+            services.AddAutoMapper(typeof(ColorProfile));
             services.AddControllers().AddNewtonsoftJson(options =>
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+         options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
             
             services.AddSwaggerGen(c =>

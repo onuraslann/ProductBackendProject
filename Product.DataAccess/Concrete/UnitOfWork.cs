@@ -28,7 +28,7 @@ namespace Product.DataAccess.Concrete
             _context.Dispose();
         }
 
-        public IBrandDal Brand => _brandDal ?? new EfBrandDal(_context);
+        public IBrandDal Brand => _brandDal ?? new EfBrandDal(_context);//singleton 
 
         public ICategoryDal Categories => _categoryDal ?? new EfCategoryDal(_context);
 

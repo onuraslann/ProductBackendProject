@@ -28,6 +28,10 @@ namespace Product.Business.Services.Concrete
         public async Task<IResult> Add(ProductAddDto productAddDto, string createdByName)
         {
             var product = _mapper.Map<Productt>(productAddDto);
+            product.CreatedDate = DateTime.Now;
+            product.ModifedDate = DateTime.Now;
+            product.IsDeleted = false;
+          
             product.CreatedByName = createdByName;
             product.ModifiedByName = createdByName;
             await _unitOfWork.Product.AddAsync(product).ContinueWith(t=>_unitOfWork.SaveAsync());
@@ -59,6 +63,11 @@ namespace Product.Business.Services.Concrete
                 });
             }
             return new ErrorDataResult<ProductListDto>(Messages.ErrorMessages);
+        }
+
+        public IDataResult<List<ProductDetailDto>> GetByDtoAsync()
+        {
+            return new SuccessDataResult<List<ProductDetailDto>>(_unitOfWork.Product.GetByDto());
         }
 
         public async Task<IDataResult<ProductListDto>> GetList()
@@ -94,5 +103,6 @@ namespace Product.Business.Services.Concrete
             await _unitOfWork.Product.UpdateAsync(product).ContinueWith(p => _unitOfWork.SaveAsync());
             return new SuccessResult();
         }
+        
     }
 }

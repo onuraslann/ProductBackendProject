@@ -12,7 +12,7 @@ namespace Product.Business.Services.Abstract
     public interface IColorService
     {
         Task<IDataResult<ColorListDto>> GetList();
-        Task<IResult> Add(ColorAddDto colorAddDto, string createdByName);
+        Task<IResult> Add(ColorAddDto colorAddDto);
         Task<IResult> Update(ColorUpdateDto colorUpdateDto, string modifiedByName);
    
         Task<IResult> HardDelete(int colorId);
