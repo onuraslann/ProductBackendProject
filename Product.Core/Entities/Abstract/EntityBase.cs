@@ -8,7 +8,7 @@ namespace Product.Core.Entities.Abstract
 {
     public abstract  class EntityBase
     {
-  
+        //_Abstract Factory Design Deseni
         public virtual bool IsDeleted { get; set; } = false;
         public virtual DateTime CreatedDate { get; set; } = DateTime.Now;
         public virtual DateTime ModifedDate { get; set; }
