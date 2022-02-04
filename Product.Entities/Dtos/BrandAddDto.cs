@@ -19,6 +19,6 @@ namespace Product.Entities.Dtos
        
         [DisplayName("IsActive ? ")]
         [Required(ErrorMessage = "{0} boş geçilemez")]
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } 
     }
 }
